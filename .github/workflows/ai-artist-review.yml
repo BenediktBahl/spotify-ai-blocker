@@ -1,0 +1,44 @@
+name: Review AI Artist
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{secrets.PAT}}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: .github/scripts
+        run: npm install
+        
+      - name: Process comment
+        id: review
+        env:
+          GITHUB_PAT: ${{secrets.PAT}}
+          REPO: ${{github.repository}}
+          ISSUE_NUMBER: ${{github.event.issue.number}}
+          COMMENT_BODY: ${{github.event.comment.body}}
+        run: |
+          node .github/scripts/review.js
+          
+      - name: commit and push
+        run: |
+          git config --global user.email "cesar.bernard@gmx.de"
+          git config --global user.name "CennoxX"
+          git config --global credential.helper cache
+          git add SpotifyAiArtists.csv
+          git commit -m "Add AI Artist: '${{steps.review.outputs.artist_name}}' (ID: ${{steps.review.outputs.artist_id}})"
+          git push
+          

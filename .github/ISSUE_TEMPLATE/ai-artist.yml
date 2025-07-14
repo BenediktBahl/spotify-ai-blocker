@@ -1,0 +1,48 @@
+name: "🚫 Add AI-Artist"
+description: "Suggest an artist making AI music"
+title: "[AI-Artist] ..."
+labels: ["ai-artist"]
+body:
+  - type: input
+    id: artist_url
+    attributes:
+      label: "Spotify URL"
+      description: "Full link to the artist (e.g. https://open.spotify.com/artist/1vCWHaC5f2uS3yhpwWbIA6)"
+      placeholder: "https://open.spotify.com/artist/..."
+    validations:
+      required: true
+
+  - type: input
+    id: artist_name
+    attributes:
+      label: "Artist Name"
+      description: "Name on Spotify"
+      placeholder: "e.g. SynthVerse"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: ai_indicators
+    attributes:
+      label: "Why could this artist be AI-generated?"
+      description: "This info helps verify whether the artist is likely generating AI music. The more context you provide, the easier and faster the review process becomes.\nCheck all that apply:"
+      options:
+        - label: "Lyrics appear AI-generated (repetitive, verified via tool, etc.)"
+        - label: "Audio artifacts (robotic, high dynamics)"
+        - label: "AI-style cover art"
+        - label: "All releases since 2024"
+        - label: "High number of albums released in a short time"
+    validations:
+      required: false
+
+  - type: textarea
+    id: other_reason
+    attributes:
+      label: "Other reasons"
+      description: "Extra notes, evidence or links"
+      placeholder: |
+        - AI bio or label
+        - External sources
+        - Other suspicious signs...
+    validations:
+      required: false
