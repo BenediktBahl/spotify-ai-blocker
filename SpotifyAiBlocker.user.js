@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.0
+// @version      0.1.1
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -10,6 +10,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=spotify.com
 // @grant        GM_xmlhttpRequest
 // @grant        GM_registerMenuCommand
+// @grant        GM_setClipboard
 // @grant        unsafeWindow
 // @connect      gist.github.com
 // @license      MIT
@@ -126,22 +127,22 @@
         return { name: el.innerText, url: el.href, id: el.href.match(/\/artist\/([^\s]+)/i)?.[1] };
     }
 
-    GM_registerMenuCommand("Report AI Artist in GitHub", () => {
+    GM_registerMenuCommand("Report AI Artist in GitHub", async() => {
         const { name, url, id } = getArtistInfo();
         await blockArtist(id);
         window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&artist_name=${name}`);
     });
 
-    GM_registerMenuCommand("Report AI Artist per Mail", () => {
+    GM_registerMenuCommand("Report AI Artist per Mail", async() => {
         const { name, url, id } = getArtistInfo();
         await blockArtist(id);
-        window.open(`mailto:example@example.com?subject=${encodeURIComponent('AI Artist: ' + name)}&body=${encodeURIComponent('Report: ' + name + ' - ' + url)}`);
+        window.open(`mailto:example@example.com?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
     });
 
-    GM_registerMenuCommand("Copy AI Artist ID and name", () => {
+    GM_registerMenuCommand("Copy AI Artist ID and name", async() => {
         const { name, id } = getArtistInfo();
         await blockArtist(id);
-        copy(`${id},${name}`);
+        GM_setClipboard(`${id},${name}`, "text");
     });
 
     if (getLastRun() == today)
