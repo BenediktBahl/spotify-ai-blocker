@@ -20,7 +20,7 @@
 (async function() {
     "use strict";
 
-    const CSV_URL = "https://gist.github.com/CennoxX/2cdcf94b2c8c938dcf2df8879275244c/raw/823322199484c91cfc6963a60921b1177c537042/SpotifyAIArtists.csv";
+    const CSV_URL = "https://raw.githubusercontent.com/CennoxX/spotify-ai-blocker/refs/heads/main/SpotifyAiArtists.csv";
     const STORAGE_KEY = "spotifyBlockedArtists";
     const LAST_RUN_KEY = "spotifyBlockerLastRun";
     const today = new Date().toISOString().slice(0, 10);
