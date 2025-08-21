@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.1
+// @version      0.1.2
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -12,7 +12,7 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_setClipboard
 // @grant        unsafeWindow
-// @connect      gist.github.com
+// @connect      raw.githubusercontent.com
 // @license      MIT
 // ==/UserScript==
 /* jshint esversion: 11 */
