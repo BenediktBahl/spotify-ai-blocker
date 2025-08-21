@@ -139,10 +139,10 @@
         window.open(`mailto:example@example.com?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
     });
 
-    GM_registerMenuCommand("Copy AI Artist ID and name", async() => {
+    GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
         const { name, id } = getArtistInfo();
         await blockArtist(id);
-        GM_setClipboard(`${id},${name}`, "text");
+        GM_setClipboard(`${name},${id}`, "text");
     });
 
     if (getLastRun() == today)
