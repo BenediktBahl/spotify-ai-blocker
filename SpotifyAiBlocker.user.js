@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.2
+// @version      0.1.3
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -136,7 +136,7 @@
     GM_registerMenuCommand("Report AI Artist per Mail", async() => {
         const { name, url, id } = getArtistInfo();
         await blockArtist(id);
-        window.open(`mailto:example@example.com?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
+        window.open(`mailto:${atob("Y2VzYXIuYmVybmFyZEBnbXguZGU=")}?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
     });
 
     GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
