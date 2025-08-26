@@ -31,7 +31,6 @@ body:
         - label: "High number of releases in a short time"
         - label: "AI-style cover art"
         - label: "Audio artifacts (robotic, high dynamics)"
-        - label: "Lyrics appear AI-generated (repetitive, verified via tool, etc.)"
     validations:
       required: false
 
