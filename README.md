@@ -14,7 +14,7 @@
 
 ## Installation
 1. Install a userscript manager (e.g. Tampermonkey, Violentmonkey).
-2. Visit the script on [GreasyFork](https://greasyfork.org/en/users/21515) or [GitHub](https://github.com/CennoxX/userscripts).
+2. Visit the script on [GreasyFork](https://update.greasyfork.org/scripts/546762/Spotify%20AI%20Artist%20Blocker.user.js) or [GitHub](https://github.com/CennoxX/spotify-ai-blocker/raw/refs/heads/main/SpotifyAiBlocker.user.js).
 3. Click **Install** and confirm.
 
 ## Support
