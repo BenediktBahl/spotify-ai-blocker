@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.3
+// @version      0.1.4
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -27,7 +27,7 @@
 
     const getBlocked = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     const addBlocked = id => { const b = getBlocked(); b.includes(id) || (b.push(id), localStorage.setItem(STORAGE_KEY, JSON.stringify(b))) };
-    const getLastRun = () => localStorage.getItem(LAST_RUN_KEY);
+    const hasRunToday = () => localStorage.getItem(LAST_RUN_KEY) == today;
     const setLastRun = d => localStorage.setItem(LAST_RUN_KEY, d);
     let authHeader;
 
@@ -46,11 +46,10 @@
     }
 
     function getUsername() {
-        const username = Object.keys(localStorage).find(k => k.includes(":") && !k.startsWith("anonymous:")).split(":")[0];
-        if (username)
-            return username;
-        alert("Username not found.");
-        return null;
+        const username = Object.keys(localStorage).find(k => k.includes(":") && !k.startsWith("anonymous:"))?.split(":")[0];
+        if (!username)
+            alert("Username not found.");
+        return username;
     }
 
     async function blockArtist(id) {
@@ -69,18 +68,17 @@
                 body: JSON.stringify({
                     username: username,
                     set: "artistban",
-                    items: [{ uri: "spotify:artist:" + id }]
+                    items: [{ uri: `spotify:artist:${id}` }]
                 })
             });
             if (response.ok)
                 return true;
             if (response.status == 401)
                 localStorage.removeItem("spotifyAccessToken");
-            return false;
         } catch (e) {
             console.error("blockArtist error:", e);
-            return false;
         }
+        return false;
     }
 
     async function main() {
@@ -89,9 +87,8 @@
             const blocked = getBlocked();
             const toBlock = artists.filter(a => !blocked.includes(a.id));
             console.log(`Loaded ${artists.length} artists, ${toBlock.length} to block`);
-            if (toBlock.length == 0) {
+            if (!toBlock.length)
                 console.log("No new artists to ban.");
-            }
             let done = 0;
             for (const a of toBlock) {
                 const result = await blockArtist(a.id);
@@ -124,7 +121,7 @@
 
     function getArtistInfo() {
         const el = document.querySelector('.Root [data-testid="now-playing-bar"] [data-testid="context-item-info-artist"]');
-        return { name: el.innerText, url: el.href, id: el.href.match(/\/artist\/([^\s]+)/i)?.[1] };
+        return { name: el?.innerText, url: el?.href, id: el?.href?.match(/\/artist\/([^\s]+)/i)?.[1] };
     }
 
     GM_registerMenuCommand("Report AI Artist in GitHub", async() => {
@@ -145,7 +142,6 @@
         GM_setClipboard(`${name},${id}`, "text");
     });
 
-    if (getLastRun() == today)
-        return;
-    addFetchWrapper();
+    if (!hasRunToday())
+        addFetchWrapper();
 })();
