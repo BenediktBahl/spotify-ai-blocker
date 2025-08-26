@@ -1,6 +1,6 @@
 name: "🚫 Add AI-Artist"
 description: "Suggest an artist making AI music"
-title: "[AI-Artist] ..."
+title: "[AI-Artist] …"
 labels: ["ai-artist"]
 body:
   - type: input
@@ -8,7 +8,7 @@ body:
     attributes:
       label: "Spotify URL"
       description: "Full link to the artist (e.g. https://open.spotify.com/artist/1vCWHaC5f2uS3yhpwWbIA6)"
-      placeholder: "https://open.spotify.com/artist/..."
+      placeholder: "https://open.spotify.com/artist/…"
     validations:
       required: true
 
@@ -25,23 +25,23 @@ body:
     id: ai_indicators
     attributes:
       label: "Why could this artist be AI-generated?"
-      description: "This info helps verify whether the artist is likely generating AI music. The more context you provide, the easier and faster the review process becomes.\nCheck all that apply:"
+      description: "Select all that apply. Providing context helps speed up verification."
       options:
         - label: "All releases since 2024"
         - label: "High number of releases in a short time"
         - label: "AI-style cover art"
-        - label: "Audio artifacts (robotic, high dynamics)"
+        - label: "Audio artifacts (robotic sound, high dynamics)"
     validations:
       required: false
 
   - type: textarea
     id: other_reason
     attributes:
-      label: "Other reasons"
-      description: "Extra notes, evidence or links"
+      label: "Additional notes or evidence"
+      description: "Any extra context, links, or observations"
       placeholder: |
         - AI bio or label
         - External sources
-        - Other suspicious signs...
+        - Other suspicious signs…
     validations:
       required: false
