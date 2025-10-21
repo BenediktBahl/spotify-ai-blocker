@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.5
+// @version      0.1.6
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -29,6 +29,7 @@
     const addBlocked = id => { const b = getBlocked(); b.includes(id) || (b.push(id), localStorage.setItem(STORAGE_KEY, JSON.stringify(b))) };
     const hasRunToday = () => localStorage.getItem(LAST_RUN_KEY) == today;
     const setLastRun = d => localStorage.setItem(LAST_RUN_KEY, d);
+    let hasRun = false;
     let authHeader;
 
     async function fetchArtistList() {
@@ -83,6 +84,7 @@
 
     async function main() {
         try {
+            hasRun = true;
             const artists = await fetchArtistList();
             const blocked = getBlocked();
             const toBlock = artists.filter(a => !blocked.includes(a.id));
@@ -110,12 +112,10 @@
         const originalFetch = unsafeWindow.fetch;
         unsafeWindow.fetch = async function (...args) {
             const [, init] = args;
-            authHeader = init?.headers?.authorization;
-            if (authHeader) {
-                unsafeWindow.fetch = originalFetch;
-                if (!hasRunToday())
-                    main();
-            }
+            if (init?.headers?.authorization)
+                authHeader = init?.headers?.authorization;
+            if (authHeader && !hasRun && !hasRunToday())
+                main();
             return originalFetch.apply(this, args);
         };
     }
