@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.6
+// @version      0.1.7
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -83,6 +83,7 @@
     }
 
     async function main() {
+        const randomDelay = () => new Promise(r => setTimeout(r, 300 + Math.random() * 200));
         try {
             hasRun = true;
             const artists = await fetchArtistList();
@@ -100,6 +101,7 @@
                 } else {
                     console.log(`Failed to block ${a.id}`);
                 }
+                await randomDelay();
             }
             setLastRun(today);
             console.log("Finished blocking artists.");
