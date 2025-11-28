@@ -10,12 +10,14 @@ async function run() {
   const token = process.env.GITHUB_PAT;
   const [owner, repo] = process.env.REPO.split("/");
   const issue_number = Number(process.env.ISSUE_NUMBER);
-  const command = (process.env.COMMENT_BODY || "").toLowerCase();
-  const author = github.context.payload.comment.user.login;
-
+  const eventName = process.env.EVENT_NAME;
+  const author = (eventName === "issue_comment") ? github.context.payload.comment.user.login : github.context.payload.issue.user.login;
+  const command = (eventName === "issue_comment") ? process.env.COMMENT_BODY.toLowerCase() : "/accept";
   if (!command.includes("/accept") && !command.includes("/reject")) return;
+
   if (!admins.includes(author)) {
-    console.log(`Unauthorized user: ${author}`);
+    if (eventName === "issue_comment")
+      console.log(`Unauthorized user: ${author}`);
     return;
   }
 
@@ -40,6 +42,7 @@ async function run() {
 
   if (command.includes("/reject")) {
     await octokit.rest.issues.addLabels({owner, repo, issue_number, labels: ["rejected"]});
+    await octokit.rest.issues.update({ owner, repo, issue_number, state: "closed" });
     console.log(`Artist rejected: ${name}`);
   }
 }
