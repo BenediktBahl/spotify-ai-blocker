@@ -1,27 +1,26 @@
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
 const github = require("@actions/github");
-
+const token = process.env.GITHUB_PAT;
+const octokit = github.getOctokit(token);
 const csvPath = path.resolve(__dirname, "../../SpotifyAiArtists.csv");
-const admins = ["CennoxX"];
 
 async function run() {
-  const token = process.env.GITHUB_PAT;
   const [owner, repo] = process.env.REPO.split("/");
-  const issue_number = Number(process.env.ISSUE_NUMBER);
   const eventName = process.env.EVENT_NAME;
-  const author = (eventName === "issue_comment") ? github.context.payload.comment.user.login : github.context.payload.issue.user.login;
   const command = (eventName === "issue_comment") ? process.env.COMMENT_BODY.toLowerCase() : "/accept";
   if (!command.includes("/accept") && !command.includes("/reject")) return;
-
-  if (!admins.includes(author)) {
+  
+  const author = (eventName === "issue_comment") ? github.context.payload.comment.user.login : github.context.payload.issue.user.login;
+  const perm = await octokit.rest.repos.getCollaboratorPermissionLevel({owner, repo, username: author});
+  const hasWriteAccess = ["write", "admin", "maintain"].includes(perm.data.permission);
+  if (!hasWriteAccess) {
     if (eventName === "issue_comment")
       console.log(`Unauthorized user: ${author}`);
     return;
   }
 
-  const octokit = github.getOctokit(token);
+  const issue_number = Number(process.env.ISSUE_NUMBER);
   const { data: issue } = await octokit.rest.issues.get({ owner, repo, issue_number });
 
   const id = issue.body.match(/\/artist\/([^\s]+)/i)?.[1]?.trim();
