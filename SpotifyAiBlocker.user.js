@@ -83,7 +83,7 @@
     }
 
     async function main() {
-        const randomDelay = () => new Promise(r => setTimeout(r, 300 + Math.random() * 200));
+        const randomDelay = () => new Promise(r => setTimeout(r, 500 + Math.random() * 250));
         try {
             hasRun = true;
             const artists = await fetchArtistList();
