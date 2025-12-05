@@ -17,6 +17,12 @@
 2. Visit the script on [GreasyFork](https://update.greasyfork.org/scripts/546762/Spotify%20AI%20Artist%20Blocker.user.js) or [GitHub](https://github.com/CennoxX/spotify-ai-blocker/raw/refs/heads/main/SpotifyAiBlocker.user.js).
 3. Click **Install** and confirm.
 
+## Similar Projects
+- [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool for detecting AI-generated songs
+- [Using AI To Detect AI Music](https://www.youtube.com/watch?v=QVXfcIb3OKo) – YouTube video about identifying AI music
+- [Spotify AI Blocklist](https://github.com/eye-wave/spotify-ai-blocklist) – Another blocklist for AI artists on Spotify
+- [AI Bands](https://github.com/romiem/ai-bands) – Curated list of AI artists on various platforms
+- 
 ## Support
 Found an AI-music generating artist? [Add an AI artist using GitHub](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml) or [send a mail](mailto:cesar.bernard@gmx.de). 
 
