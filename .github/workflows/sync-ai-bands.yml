@@ -1,0 +1,41 @@
+name: Sync AI Bands
+
+on:
+  schedule:
+    # Runs every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{secrets.PAT}}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: .github/scripts
+        run: npm install
+        
+      - name: Sync AI bands
+        id: sync
+        run: |
+          node .github/scripts/sync-ai-bands.js
+          
+      - name: Commit and push changes
+        if: steps.sync.outputs.artists_added == 'true'
+        run: |
+          git config --global user.email "cesar.bernard@gmx.de"
+          git config --global user.name "CennoxX"
+          git config --global credential.helper cache
+          git add SpotifyAiArtists.csv
+          git commit -m "Sync AI artists from ai-bands repository"
+          git push
