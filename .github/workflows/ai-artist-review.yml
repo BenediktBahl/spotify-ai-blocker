@@ -1,10 +1,8 @@
 name: Review AI Artist
 
 on:
-  issue_comment:
-    types: [created]
   issues:
-    types: [opened]
+    types: [opened, labeled]
 
 jobs:
   review:
@@ -14,8 +12,8 @@ jobs:
       - name: clone repo
         uses: actions/checkout@v4
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
-      
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -24,18 +22,14 @@ jobs:
       - name: Install dependencies
         working-directory: .github/scripts
         run: npm install
-        
-      - name: Process issue or comment
+
+      - name: Process issue
         id: review
         env:
-          GITHUB_PAT: ${{secrets.GITHUB_TOKEN}}
-          REPO: ${{github.repository}}
-          ISSUE_NUMBER: ${{github.event.issue.number}}
-          COMMENT_BODY: ${{github.event.comment.body || ''}}
-          EVENT_NAME: ${{github.event_name}}
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node .github/scripts/review.js
-          
+
       - name: commit and push
         if: steps.review.outputs.artist_id
         run: |
@@ -43,6 +37,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global credential.helper cache
           git add SpotifyAiArtists.csv
-          git commit -m "Add AI artist: '${{steps.review.outputs.artist_name}}' (ID: ${{steps.review.outputs.artist_id}}) fixes #${{github.event.issue.number}}"
+          git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}"
           git push
-          
