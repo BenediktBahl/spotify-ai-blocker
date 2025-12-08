@@ -26,7 +26,7 @@ jobs:
       - name: Process issue
         id: review
         env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PAT: ${{ secrets.PAT }}
         run: |
           node .github/scripts/review.js
 
