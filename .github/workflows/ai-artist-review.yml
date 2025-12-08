@@ -6,7 +6,7 @@ on:
 
 jobs:
   review:
-    if: github.event.action == 'opened' || contains(['accepted','rejected'], github.event.label.name)
+    if: github.event.action == 'opened' || github.event.label.name == 'accepted' || github.event.label.name == 'rejected'
     runs-on: ubuntu-latest
 
     steps:
