@@ -35,7 +35,11 @@ async function run() {
   // Read existing CSV
   const csvContent = fs.readFileSync(csvPath, "utf8");
   const [header, ...rows] = csvContent.trim().split("\n");
-  const existingIds = new Set(rows.map(row => row.split(",")[1]));
+  const existingIds = new Set(
+    rows
+      .filter(row => row.includes(","))
+      .map(row => row.split(",")[1])
+  );
 
   console.log(`Existing artists in CSV: ${existingIds.size}`);
 
@@ -58,12 +62,14 @@ async function run() {
 
   // Add missing artists to CSV
   for (const artist of missingArtists) {
-    rows.push(`${artist.name},${artist.id}`);
+    // Escape commas in artist names by wrapping in quotes
+    const name = artist.name.includes(",") ? `"${artist.name}"` : artist.name;
+    rows.push(`${name},${artist.id}`);
     console.log(`Added: ${artist.name} (${artist.id})`);
   }
 
   // Write updated CSV
-  fs.writeFileSync(csvPath, [header, ...rows].join("\n"));
+  fs.writeFileSync(csvPath, [header, ...rows].join("\n") + "\n");
   console.log(`Updated CSV with ${missingArtists.length} new artists`);
 
   fs.appendFileSync(process.env.GITHUB_OUTPUT || "/dev/null", `artists_added=true\n`);
