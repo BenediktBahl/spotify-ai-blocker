@@ -34,8 +34,8 @@ jobs:
       - name: commit and push
         if: steps.review.outputs.artist_id
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config --global user.email "cesar.bernard@gmx.de"
+          git config --global user.name "CennoxX"
           git config --global credential.helper cache
           git add SpotifyAiArtists.csv
           git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}"
