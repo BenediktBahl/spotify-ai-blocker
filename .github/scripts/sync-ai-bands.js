@@ -36,7 +36,7 @@ async function run() {
   const csvContent = fs.readFileSync(csvPath, "utf8");
   const [header, ...rows] = csvContent.trim().split("\n");
   
-  // Extract existing IDs - use a more robust approach
+  // Extract existing IDs
   const existingIds = new Set();
   for (const row of rows) {
     const lastCommaIndex = row.lastIndexOf(",");
@@ -67,9 +67,8 @@ async function run() {
 
   // Add missing artists to CSV
   for (const artist of missingArtists) {
-    // Replace commas with a space to avoid breaking CSV format
-    // This matches the existing approach in the repository
-    const name = artist.name.replace(/,/g, " ");
+    // Replace commas with underscore to avoid breaking CSV format
+    const name = artist.name.replace(/,/g, "_");
     rows.push(`${name},${artist.id}`);
     console.log(`Added: ${artist.name} (${artist.id})`);
   }
