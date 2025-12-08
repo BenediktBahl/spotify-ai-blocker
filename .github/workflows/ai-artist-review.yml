@@ -38,5 +38,5 @@ jobs:
           git config --global user.name "CennoxX"
           git config --global credential.helper cache
           git add SpotifyAiArtists.csv
-          git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}"
+          git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }} [skip ci]"
           git push
