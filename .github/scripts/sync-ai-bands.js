@@ -35,11 +35,16 @@ async function run() {
   // Read existing CSV
   const csvContent = fs.readFileSync(csvPath, "utf8");
   const [header, ...rows] = csvContent.trim().split("\n");
-  const existingIds = new Set(
-    rows
-      .filter(row => row.includes(","))
-      .map(row => row.split(",")[1])
-  );
+  
+  // Extract existing IDs - use a more robust approach
+  const existingIds = new Set();
+  for (const row of rows) {
+    const lastCommaIndex = row.lastIndexOf(",");
+    if (lastCommaIndex > 0) {
+      const id = row.substring(lastCommaIndex + 1);
+      existingIds.add(id);
+    }
+  }
 
   console.log(`Existing artists in CSV: ${existingIds.size}`);
 
@@ -62,8 +67,9 @@ async function run() {
 
   // Add missing artists to CSV
   for (const artist of missingArtists) {
-    // Escape commas in artist names by wrapping in quotes
-    const name = artist.name.includes(",") ? `"${artist.name}"` : artist.name;
+    // Replace commas with a space to avoid breaking CSV format
+    // This matches the existing approach in the repository
+    const name = artist.name.replace(/,/g, " ");
     rows.push(`${name},${artist.id}`);
     console.log(`Added: ${artist.name} (${artist.id})`);
   }
