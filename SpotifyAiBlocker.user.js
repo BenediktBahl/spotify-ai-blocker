@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.8
+// @version      0.1.9
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -53,7 +53,7 @@
         return username;
     }
 
-    async function blockArtist(id) {
+    async function blockArtists(ids) {
         const username = getUsername();
         if (!authHeader || !username)
             return false;
@@ -69,7 +69,7 @@
                 body: JSON.stringify({
                     username: username,
                     set: "artistban",
-                    items: [{ uri: `spotify:artist:${id}` }]
+                    items: ids.map(id => ({ uri: `spotify:artist:${id}` }))
                 })
             });
             if (response.ok)
@@ -77,7 +77,7 @@
             if (response.status == 401)
                 localStorage.removeItem("spotifyAccessToken");
         } catch (e) {
-            console.error("blockArtist error:", e);
+            console.error("blockArtists error:", e);
         }
         return false;
     }
@@ -93,13 +93,14 @@
             if (!toBlock.length)
                 console.log("No new artists to ban.");
             let done = 0;
-            for (const a of toBlock) {
-                const result = await blockArtist(a.id);
-                if (result) {
-                    addBlocked(a.id);
-                    console.log(`Banned ${a.name} (${++done}/${toBlock.length})`);
+            for (let i = 0; i < toBlock.length; i += 50) {
+                const ids = toBlock.slice(i, i + 50).map(a => a.id);
+                if (await blockArtists(ids)) {
+                    ids.forEach(id => addBlocked(id));
+                    done += ids.length;
+                    console.log(`Banned ${done}/${toBlock.length}`);
                 } else {
-                    console.log(`Failed to block ${a.id}`);
+                    console.log("Failed to block batch:", ids);
                 }
                 await randomDelay();
             }
@@ -129,19 +130,19 @@
 
     GM_registerMenuCommand("Report AI Artist in GitHub", async() => {
         const { name, url, id } = getArtistInfo();
-        await blockArtist(id);
+        await blockArtists([id]);
         window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&artist_name=${name}`);
     });
 
     GM_registerMenuCommand("Report AI Artist per Mail", async() => {
         const { name, url, id } = getArtistInfo();
-        await blockArtist(id);
+        await blockArtists([id]);
         window.open(`mailto:${atob("Y2VzYXIuYmVybmFyZEBnbXguZGU=")}?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
     });
 
     GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
         const { name, id } = getArtistInfo();
-        await blockArtist(id);
+        await blockArtists([id]);
         GM_setClipboard(`${name},${id}`, "text");
     });
 
