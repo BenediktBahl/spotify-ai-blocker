@@ -61,7 +61,7 @@ async function run() {
 
   if (missingArtists.length === 0) {
     console.log("No new artists to add");
-    fs.appendFileSync(process.env.GITHUB_OUTPUT || "/dev/null", `artists_added=false\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT || "/dev/null", `artists_added=0\n`);
     return;
   }
 
@@ -75,9 +75,8 @@ async function run() {
 
   // Write updated CSV
   fs.writeFileSync(csvPath, [header, ...rows].join("\n") + "\n");
+  fs.appendFileSync(process.env.GITHUB_OUTPUT || "/dev/null", `artists_added=${missingArtists.length}\n`);
   console.log(`Updated CSV with ${missingArtists.length} new artists`);
-
-  fs.appendFileSync(process.env.GITHUB_OUTPUT || "/dev/null", `artists_added=true\n`);
 }
 
 run().catch(err => {
