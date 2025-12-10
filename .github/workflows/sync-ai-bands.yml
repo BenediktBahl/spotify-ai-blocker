@@ -41,5 +41,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global credential.helper cache
           git add SpotifyAiArtists.csv
-          git commit -m "Sync AI artists from romiem/ai-bands (MIT License), added ${{ steps.sync.outputs.artists_added }} artists"
+          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from romiem/ai-bands (MIT License)"
           git push
