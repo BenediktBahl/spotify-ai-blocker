@@ -19,7 +19,7 @@ async function run() {
     return console.log(`Unauthorized user: ${actor}`);
 
   const command = action === "opened" ? "accepted" : label;
-  const id = issue.body?.match(/\/artist\/([^\s]+)/i)?.[1]?.trim();
+  const id = issue.body?.match(/\/artist\/([^\s?]+)/i)?.[1]?.trim();
   const name = issue.body?.match(/Artist Name\s*\n*(.+)/i)?.[1]?.trim();
   if (!id || !name)
     return console.log("Missing artist data");
