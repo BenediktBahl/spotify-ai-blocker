@@ -1,4 +1,4 @@
-# Spotify AI Blocker
+# Spotify AI Music Blocker
 
 **Block AI-generated music on Spotify** using a crowd-sourced list. This project collects artists making AI-music and blocks them automatically with a userscript.
 
@@ -20,10 +20,11 @@
 ## Similar Projects
 - [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool for detecting AI-generated songs
 - [Using AI To Detect AI Music](https://www.youtube.com/watch?v=QVXfcIb3OKo) – YouTube video about identifying AI music
-- [Spotify AI Blocklist](https://github.com/eye-wave/spotify-ai-blocklist) – Another blocklist for AI artists on Spotify
-- [AI Bands](https://github.com/romiem/ai-bands) – Curated list of AI artists on various platforms
+- [Soul Over AI](https://github.com/romiem/ai-bands) – Curated list of AI artists on various platforms
+- [Spotify AI Blocklist](https://github.com/eye-wave/spotify-ai-blocklist) – AI blocklist for Spicetify
+- [Spotify AI Band Blocker](https://github.com/Reginald-Gillespie/Spotify-AI-Band-Blocker) Spicetify plugin to block AI artists
 
 ## Support
-Found an AI-music generating artist? [Add an AI artist using GitHub](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml) or [send a mail](mailto:cesar.bernard@gmx.de). 
+Found an AI artist? Add them using [GitHub](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml), [mail](mailto:cesar.bernard@gmx.de) or anonymous via the external project [Soul Over AI](https://souloverai.com/add) (imported daily).
 
 Other problems? [Open an issue](https://github.com/CennoxX/spotify-ai-blocker/issues/new). 
