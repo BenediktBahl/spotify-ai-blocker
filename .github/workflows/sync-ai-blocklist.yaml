@@ -22,7 +22,7 @@ jobs:
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
-        run: node . github/scripts/sync-ai-blocklist. js
+        run: node .github/scripts/sync-ai-blocklist.js
 
       - name:  Commit and push if changed
         run: |
