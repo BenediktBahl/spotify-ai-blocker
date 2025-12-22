@@ -1,0 +1,39 @@
+name: Sync AI Blocklist
+
+on:
+  schedule: 
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  sync:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:  
+          node-version: '18'
+
+      - name: Run sync script
+        id: sync
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: node . github/scripts/sync-ai-blocklist. js
+
+      - name:  Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add SpotifyAiArtists.csv
+          
+          if !  git diff --quiet --staged; then
+            ARTISTS_ADDED="${{ steps.sync.outputs.artists_added }}"
+            git commit -m "Added $ARTISTS_ADDED AI artists from eye-wave/spotify-ai-blocklist (GPL-3.0)"
+            git push
+          else
+            echo "No changes to commit"
+          fi
