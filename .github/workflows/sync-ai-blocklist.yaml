@@ -35,9 +35,9 @@ jobs:
           if !  git diff --quiet --staged; then
             ARTISTS_ADDED="${{ steps.sync.outputs.artists_added }}"
             if [ "$ARTISTS_ADDED" = "1" ]; then
-              git commit -m "Add $ARTISTS_ADDED AI artist from blocklist"
+              git commit -m "Added $ARTISTS_ADDED AI artist from eye-wave/spotify-ai-blocklist (GPL-3.0)"
             else
-              git commit -m "Add $ARTISTS_ADDED AI artists from blocklist"
+              git commit -m "Added $ARTISTS_ADDED AI artists from eye-wave/spotify-ai-blocklist (GPL-3.0)"
             fi
             git push
           else
