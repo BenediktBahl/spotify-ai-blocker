@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-const AI_BANDS_URL = "https://raw.githubusercontent.com/romiem/ai-bands/refs/heads/main/dist/ai-bands.json";
+const AI_BANDS_URL = "https://raw.githubusercontent.com/romiem/ai-bands/refs/heads/main/dist/artists.json";
 const csvPath = path.resolve(__dirname, "../../SpotifyAiArtists.csv");
 
 function fetchJSON(url) {
@@ -19,12 +19,6 @@ function fetchJSON(url) {
       });
     }).on("error", reject);
   });
-}
-
-function extractSpotifyId(url) {
-  if (!url) return null;
-  const match = url.match(/spotify\.com\/artist\/([a-zA-Z0-9]+)/);
-  return match ? match[1] : null;
 }
 
 async function run() {
@@ -51,7 +45,7 @@ async function run() {
   // Find missing artists
   const missingArtists = [];
   for (const band of bands) {
-    const spotifyId = extractSpotifyId(band.spotify);
+    const spotifyId = band.spotify;
     if (spotifyId && !existingIds.has(spotifyId)) {
       missingArtists.push({ name: band.name, id: spotifyId });
     }
