@@ -1,0 +1,91 @@
+name: Sync AI Blocklists
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ============================================================
+  # Source 1: eye-wave/spotify-ai-blocklist (GPL-3.0)
+  # ============================================================
+  sync-ai-blocklist:
+    name: Sync from eye-wave/spotify-ai-blocklist
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Run AI blocklist sync
+        id: sync
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: node .github/scripts/sync-ai-blocklist.js
+
+      - name: Commit and push blocklist changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add SpotifyAiArtists.csv
+
+          if ! git diff --quiet --staged; then
+            ARTISTS_ADDED="${{ steps.sync.outputs.artists_added }}"
+            if [ "$ARTISTS_ADDED" = "1" ]; then
+              git commit -m "Added $ARTISTS_ADDED AI artist from eye-wave/spotify-ai-blocklist (GPL-3.0)"
+            else
+              git commit -m "Added $ARTISTS_ADDED AI artists from eye-wave/spotify-ai-blocklist (GPL-3.0)"
+            fi
+            git push
+          else
+            echo "No blocklist changes to commit"
+          fi
+
+  # ============================================================
+  # Source 2: romiem/ai-bands (MIT License)
+  # ============================================================
+  sync-ai-bands:
+    name: Sync from romiem/ai-bands
+    runs-on: ubuntu-latest
+    needs: sync-ai-blocklist
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install script dependencies
+        working-directory: .github/scripts
+        run: npm install
+
+      - name: Run AI bands sync
+        id: sync
+        run: node .github/scripts/sync-ai-bands.js
+
+      - name: Commit and push bands changes
+        if: steps.sync.outputs.artists_added != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add SpotifyAiArtists.csv
+          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from romiem/ai-bands (MIT License)"
+          git push
