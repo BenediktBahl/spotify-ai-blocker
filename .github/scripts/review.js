@@ -28,7 +28,7 @@ async function run() {
   if (command === "accepted") {
     const [header, ...rows] = fs.readFileSync(csvPath, "utf8").trim().split("\n");
     if (rows.some(l => l.includes(id))) {
-      await octokit.rest.issues.removeLabels({ owner, repo, issue_number, labels: ["accepted"] });
+      await octokit.rest.issues.removeLabel({ owner, repo, issue_number, name: "accepted" });
       await octokit.rest.issues.addLabels({ owner, repo, issue_number, labels: ["duplicate"] });
       await octokit.rest.issues.update({ owner, repo, issue_number, state: "closed" });
       return console.log("Duplicate artist");
