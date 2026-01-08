@@ -6,12 +6,21 @@ body:
   - type: input
     id: artist_url
     attributes:
-      label: "Spotify URL"
-      description: "Full link to the artist (e.g. https://open.spotify.com/artist/1vCWHaC5f2uS3yhpwWbIA6)"
+      label: "Spotify artist URL"
+      description: "Full link to the artist (e.g. https://open.spotify.com/artist/2G3zpEex5zoQWMF7Dcgg6e)"
       placeholder: "https://open.spotify.com/artist/…"
     validations:
       required: true
 
+  - type: input
+    id: example_track_url
+    attributes:
+      label: "Example track URL"
+      description: "Full link to a song that clearly shows this is an AI artist (e.g. https://open.spotify.com/track/48m5xhQozoQH7EPCJnHdpo)"
+      placeholder: "https://open.spotify.com/track/…"
+    validations:
+      required: true
+      
   - type: input
     id: artist_name
     attributes:
