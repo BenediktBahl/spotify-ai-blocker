@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-const AI_BANDS_URL = "https://raw.githubusercontent.com/romiem/ai-bands/refs/heads/main/dist/artists.json";
+const SOUL_OVER_AI_URL = "https://raw.githubusercontent.com/romiem/soul-over-ai/refs/heads/main/dist/artists.json";
 const csvPath = path.resolve(__dirname, "../../SpotifyAiArtists.csv");
 
 function fetchJSON(url) {
@@ -22,9 +22,9 @@ function fetchJSON(url) {
 }
 
 async function run() {
-  console.log("Fetching AI bands data...");
-  const bands = await fetchJSON(AI_BANDS_URL);
-  console.log(`Fetched ${bands.length} bands`);
+  console.log("Fetching Soul Over AI data...");
+  const artists = await fetchJSON(SOUL_OVER_AI_URL);
+  console.log(`Fetched ${artists.length} artists`);
 
   // Read existing CSV
   const csvContent = fs.readFileSync(csvPath, "utf8");
@@ -44,10 +44,10 @@ async function run() {
 
   // Find missing artists
   const missingArtists = [];
-  for (const band of bands) {
-    const spotifyId = band.spotify;
+  for (const artist of artists) {
+    const spotifyId = artist.spotify;
     if (spotifyId && !existingIds.has(spotifyId)) {
-      missingArtists.push({ name: band.name, id: spotifyId });
+      missingArtists.push({ name: artist.name, id: spotifyId });
     }
   }
 

@@ -54,10 +54,10 @@ jobs:
           fi
 
   # ============================================================
-  # Source 2: romiem/ai-bands (MIT License)
+  # Source 2: romiem/soul-over-ai (MIT License)
   # ============================================================
-  sync-ai-bands:
-    name: Sync from romiem/ai-bands
+  sync-soul-over-ai:
+    name: Sync from romiem/soul-over-ai
     runs-on: ubuntu-latest
 
     steps:
@@ -75,9 +75,9 @@ jobs:
         working-directory: .github/scripts
         run: npm install
 
-      - name: Run AI bands sync
+      - name: Run Soul Over AI sync
         id: sync
-        run: node .github/scripts/sync-ai-bands.js
+        run: node .github/scripts/sync-soul-over-ai.js
 
       - name: Commit and push bands changes
         if: steps.sync.outputs.artists_added != '0'
@@ -86,5 +86,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add SpotifyAiArtists.csv
-          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from romiem/ai-bands (MIT License)"
+          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from romiem/soul-over-ai (MIT License)"
           git push

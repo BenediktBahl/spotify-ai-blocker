@@ -20,7 +20,7 @@
 ## Similar Projects
 - [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool for detecting AI-generated songs
 - [Using AI To Detect AI Music](https://www.youtube.com/watch?v=QVXfcIb3OKo) – YouTube video about identifying AI music
-- [Soul Over AI](https://github.com/romiem/ai-bands) – Curated list of AI artists on various platforms
+- [Soul Over AI](https://github.com/romiem/soul-over-ai) – Curated list of AI artists on various platforms
 - [Spotify AI Blocklist](https://github.com/eye-wave/spotify-ai-blocklist) – AI blocklist for Spicetify
 - [Spotify AI Band Blocker](https://github.com/Reginald-Gillespie/Spotify-AI-Band-Blocker) Spicetify plugin to block AI artists
 
