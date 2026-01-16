@@ -54,10 +54,10 @@ jobs:
           fi
 
   # ============================================================
-  # Source 2: romiem/soul-over-ai (MIT License)
+  # Source 2: xoundbyte/soul-over-ai (MIT License)
   # ============================================================
   sync-soul-over-ai:
-    name: Sync from romiem/soul-over-ai
+    name: Sync from xoundbyte/soul-over-ai
     runs-on: ubuntu-latest
 
     steps:
@@ -86,5 +86,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add SpotifyAiArtists.csv
-          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from romiem/soul-over-ai (MIT License)"
+          git commit -m "Added ${{ steps.sync.outputs.artists_added }} AI artists from xoundbyte/soul-over-ai (MIT License)"
           git push

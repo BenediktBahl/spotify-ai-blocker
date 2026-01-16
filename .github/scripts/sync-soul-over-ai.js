@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-const SOUL_OVER_AI_URL = "https://raw.githubusercontent.com/romiem/soul-over-ai/refs/heads/main/dist/artists.json";
+const SOUL_OVER_AI_URL = "https://raw.githubusercontent.com/xoundbyte/soul-over-ai/refs/heads/main/dist/artists.json";
 const csvPath = path.resolve(__dirname, "../../SpotifyAiArtists.csv");
 
 function fetchJSON(url) {
