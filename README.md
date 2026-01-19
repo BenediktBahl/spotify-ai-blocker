@@ -16,6 +16,7 @@
 1. Install Tampermonkey (the script requires direct page-context access, which other userscript managers do not support).
 2. Visit the script on [GreasyFork](https://greasyfork.org/scripts/546762-spotify-ai-artist-blocker) or [GitHub](https://github.com/CennoxX/spotify-ai-blocker/raw/refs/heads/main/SpotifyAiBlocker.user.js).
 3. Click **Install** and confirm.
+4. Open https://open.spotify.com/ to run the script
 
 ## Similar Projects
 - [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool for detecting AI-generated songs
