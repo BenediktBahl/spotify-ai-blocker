@@ -20,10 +20,12 @@
 
 ## Similar Projects
 - [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool for detecting AI-generated songs
+- [AI-Music Detection](https://github.com/deezer/ismir25-ai-music-detector) – Code for Deezers AI music tagging system
+- [Identifying Counterfeit Songs](https://openreview.net/forum?id=PY7KSh29Z8) – Paper about a large-scale dataset to detect AI songs
 - [Using AI To Detect AI Music](https://www.youtube.com/watch?v=QVXfcIb3OKo) – YouTube video about identifying AI music
 - [Soul Over AI](https://github.com/xoundbyte/soul-over-ai) – Curated list of AI artists on various platforms
 - [Spotify AI Blocklist](https://github.com/eye-wave/spotify-ai-blocklist) – AI blocklist for Spicetify
-- [Spotify AI Band Blocker](https://github.com/Reginald-Gillespie/Spotify-AI-Band-Blocker) Spicetify plugin to block AI artists
+- [Spotify AI Band Blocker](https://github.com/Reginald-Gillespie/Spotify-AI-Band-Blocker) – Spicetify plugin to block AI artists
 
 ## Support
 Found an AI artist? Add them using [GitHub](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml), [mail](mailto:cesar.bernard@gmx.de) or anonymous via the external project [Soul Over AI](https://souloverai.com/add) (imported daily).
