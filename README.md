@@ -7,6 +7,12 @@ Automatically blocks artists known for AI-generated music using a community-main
 - Daily updated
 - Fully open source
 
+## Check if a Spotify Artist is AI-Generated
+Wondering if a Spotify artist is AI-generated? If you don’t want to install the script and just want to check an artist, you can search the list of AI music artists here:  
+**[Search the AI Artist List](https://github.com/CennoxX/spotify-ai-blocker/blob/main/SpotifyAiArtists.csv)**
+
+Use the **Search this file** box at the top of the page to look for the artist name or ID.
+
 ## Installation
 1. Install **[Tampermonkey](https://www.tampermonkey.net/index.php)**
    - The script requires direct page-context access, which other userscript managers do not support.
