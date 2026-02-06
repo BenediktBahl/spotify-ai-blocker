@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.10
+// @version      0.1.11
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -149,19 +149,20 @@
 
     function getArtistInfo() {
         const el = document.querySelector('.Root [data-testid="now-playing-bar"] [data-testid="context-item-info-artist"]');
-        return { name: el?.innerText, url: el?.href, id: el?.href?.match(/\/artist\/([^\s]+)/i)?.[1] };
+        const track = "https://open.spotify.com/track/" + document.querySelector('[data-context-item-type="track"]').href.split("track%3A").pop();
+        return { name: el?.innerText, url: el?.href, id: el?.href?.match(/\/artist\/([^\s]+)/i)?.[1], track: track };
     }
 
     GM_registerMenuCommand("Report AI Artist in GitHub", async() => {
-        const { name, url, id } = getArtistInfo();
+        const { name, url, id, track } = getArtistInfo();
         await blockArtists([id]);
-        window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&artist_name=${name}`);
+        window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&example_track_url=${track}&artist_name=${name}`);
     });
 
-    GM_registerMenuCommand("Report AI Artist per Mail", async() => {
-        const { name, url, id } = getArtistInfo();
+    GM_registerMenuCommand("Report AI Artist per Soul Over AI", async() => {
+        const { name, id } = getArtistInfo();
         await blockArtists([id]);
-        window.open(`mailto:${atob("Y2VzYXIuYmVybmFyZEBnbXguZGU=")}?subject=${encodeURIComponent(`AI Artist: ${name}`)}&body=${encodeURIComponent(`Report: ${name} - ${url}`)}`);
+        window.open(`https://souloverai.com/add?name=${name}&disclosure=full&spotify=${id}`);
     });
 
     GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
