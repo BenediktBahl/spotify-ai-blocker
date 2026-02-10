@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const github = require("@actions/github");
 
-const token = process.env.GITHUB_PAT;
+const token = process.env.GITHUB_TOKEN;;
 const octokit = github.getOctokit(token);
 const csvPath = path.resolve(__dirname, "../../SpotifyAiArtists.csv");
 
