@@ -4,16 +4,18 @@ on:
   issues:
     types: [opened, labeled]
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   review:
     if: github.event.action == 'opened' || github.event.label.name == 'accepted' || github.event.label.name == 'rejected'
     runs-on: ubuntu-latest
 
     steps:
-      - name: clone repo
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PAT }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,16 +29,16 @@ jobs:
       - name: Process issue
         id: review
         env:
-          GITHUB_PAT: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node .github/scripts/review.js
 
-      - name: commit and push
+      - name: Commit and push changes
         if: steps.review.outputs.artist_id
         run: |
-          git config --global user.email "cesar.bernard@gmx.de"
-          git config --global user.name "CennoxX"
-          git config --global credential.helper cache
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add SpotifyAiArtists.csv
-          git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }} [skip ci]"
+          git commit -m "Add AI artist: '${{ steps.review.outputs.artist_name }}' (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}"
           git push
