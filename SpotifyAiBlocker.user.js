@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.11
+// @version      0.1.12
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -113,14 +113,14 @@
             const toBlock = artists.filter(a => !blocked.includes(a.id));
             console.log(`Loaded ${artists.length} artists, ${toBlock.length} to block`);
             if (!toBlock.length)
-                console.log("No new artists to ban.");
+                console.log("No new artists to block.");
             let done = 0;
             for (let i = 0; i < toBlock.length; i += 50) {
                 const ids = toBlock.slice(i, i + 50).map(a => a.id);
                 if (await blockArtists(ids)) {
                     ids.forEach(id => addBlocked(id));
                     done += ids.length;
-                    console.log(`Banned ${done}/${toBlock.length}`);
+                    console.log(`Blocked ${done}/${toBlock.length}`);
                 } else {
                     console.log("Failed to block batch:", ids);
                 }
@@ -157,12 +157,6 @@
         const { name, url, id, track } = getArtistInfo();
         await blockArtists([id]);
         window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&example_track_url=${track}&artist_name=${name}`);
-    });
-
-    GM_registerMenuCommand("Report AI Artist per Soul Over AI", async() => {
-        const { name, id } = getArtistInfo();
-        await blockArtists([id]);
-        window.open(`https://souloverai.com/add?name=${name}&disclosure=full&spotify=${id}`);
     });
 
     GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
