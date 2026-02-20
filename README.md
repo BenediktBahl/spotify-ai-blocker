@@ -36,9 +36,7 @@ The script automatically blocks artists from a community list of AI-generated mu
 5. **Persistence:** Remembers blocked artists and last run date using `localStorage` to prevent duplicate requests.
 
 ## Help Improve the List
-Found an AI artist? Submit them:
-- [GitHub submission form](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml)
-- Anonymous via [Soul Over AI](https://souloverai.com/add) (imported daily)
+Found an AI artist? Submit them: [GitHub submission form](https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml)
 
 ## Similar Projects
 - [SubmitHub AI Song Checker](https://www.submithub.com/story/ai-song-checker) – Tool to detect AI-generated songs
