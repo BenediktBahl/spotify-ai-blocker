@@ -117,12 +117,13 @@
             let done = 0;
             for (let i = 0; i < toBlock.length; i += 50) {
                 const ids = toBlock.slice(i, i + 50).map(a => a.id);
+                const names = toBlock.slice(i, i + 50).map(a => a.name);
                 if (await blockArtists(ids)) {
                     ids.forEach(id => addBlocked(id));
                     done += ids.length;
-                    console.log(`Blocked ${done}/${toBlock.length}`);
+                    console.log(`Blocked ${done} / ${toBlock.length} (${names.join(", ")})`);
                 } else {
-                    console.log("Failed to block batch:", ids);
+                    console.log(`Failed to block batch:\n\nIDs: ${ids.join(", ")}, \n\nNames: ${names.join(", ")}`);
                 }
                 await randomDelay();
             }
