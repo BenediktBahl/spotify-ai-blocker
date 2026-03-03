@@ -104,6 +104,7 @@
             setTimeout(()=>container.remove(),300);
         },5000);
     }
+
     async function main() {
         const randomDelay = () => new Promise(r => setTimeout(r, 500 + Math.random() * 250));
         try {
@@ -116,14 +117,16 @@
                 console.log("No new artists to block.");
             let done = 0;
             for (let i = 0; i < toBlock.length; i += 50) {
-                const ids = toBlock.slice(i, i + 50).map(a => a.id);
+                const batch = toBlock.slice(i, i + 50);
+                const ids = batch.map(a => a.id);
                 if (await blockArtists(ids)) {
                     ids.forEach(id => addBlocked(id));
                     done += ids.length;
-                    console.log(`Blocked ${done}/${toBlock.length}`);
+                    console.log(`Blocked ${done} / ${toBlock.length}`);
                 } else {
-                    console.log("Failed to block batch:", ids);
+                    console.log("Failed to block batch.");
                 }
+                console.log(batch.map(a => `${a.name} (${a.id})`).join("\n"));
                 await randomDelay();
             }
             setLastRun(today);
