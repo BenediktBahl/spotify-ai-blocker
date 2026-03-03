@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.12
+// @version      0.1.13
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -82,8 +82,26 @@
         return false;
     }
 
-    function toastMessage(number) {
-        var container = document.createElement("div");
+    function waitForElement(selector) {
+        return new Promise(resolve => {
+            const el = document.querySelector(selector);
+            if (el)
+                return resolve(el);
+
+            let observer = null;
+            observer = new MutationObserver(() => {
+                const el = document.querySelector(selector);
+                if (el) {
+                    observer.disconnect();
+                    resolve(el);
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+    }
+
+    async function toastMessage(number) {
+        const container = document.createElement("div");
         container.innerHTML = `
 <div class="notistack-SnackbarContainer" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%)">
   <div class="notistack-Snackbar">
@@ -96,13 +114,15 @@
     </div>
   </div>
 </div>`;
-        document.querySelector(".VTO__modal-slot").appendChild(container);
+
+        const modalSlot = await waitForElement(".VTO__modal-slot");
+        modalSlot.appendChild(container);
         setTimeout(()=>{
-            var snackbar = container.querySelector(".notistack-Snackbar");
+            const snackbar = container.querySelector(".notistack-Snackbar");
             snackbar.style.transition = "opacity 0.3s";
             snackbar.style.opacity = 0;
-            setTimeout(()=>container.remove(),300);
-        },5000);
+            setTimeout(() => container.remove(), 300);
+        }, 5000);
     }
 
     async function main() {
