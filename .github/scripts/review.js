@@ -23,7 +23,6 @@ async function run() {
   const payload = context.payload;
   const action = payload.action;
   const issue = payload.issue;
-  const label = payload.label?.name?.toLowerCase();
   const actor = payload.sender?.login;
   const issue_number = issue.number;
 
