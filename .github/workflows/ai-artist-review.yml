@@ -26,6 +26,8 @@ jobs:
         id: review
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUBMITHUB_API_KEY: ${{ secrets.SUBMITHUB_API_KEY }}
+          GITHUB_OUTPUT: ${{ github.step_summary }}
         run: |
           deno run --allow-read --allow-write --allow-env --allow-net .github/scripts/review.js
 
