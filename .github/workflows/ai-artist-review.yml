@@ -10,9 +10,6 @@ permissions:
 
 jobs:
   review:
-    concurrency:
-      group: review-issues
-      cancel-in-progress: false
     if: ${{ github.event.action == 'opened' || github.event.label.name == 'accepted' || github.event.label.name == 'rejected' }}
     runs-on: ubuntu-latest
 
