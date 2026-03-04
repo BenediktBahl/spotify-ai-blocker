@@ -42,4 +42,5 @@ jobs:
 
           git add SpotifyAiArtists.csv
           git commit -m "Add AI artist: \"${{ steps.review.outputs.artist_name }}\" (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}"
+          git pull --rebase origin main || echo "No changes to pull"
           git push
