@@ -32,6 +32,10 @@ async function run() {
   if (!id || !name)
     return console.log("Missing artist data");
 
+  if (issue.title?.startsWith("[AI-Artist]")) {
+      await octokit.rest.issues.addLabels({ owner, repo, issue_number, labels: ["ai-artist"] });
+  }
+
   const [header, ...rows] = (await Deno.readTextFile(csvPath)).trim().replace(/\r\n/g, "\n").split("\n");
   if (rows.some(l => l.includes(id))) {
     try { await octokit.rest.issues.removeLabel({ owner, repo, issue_number, name: "accepted" }); } catch (_) {}
