@@ -33,6 +33,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SUBMITHUB_API_KEY: ${{ secrets.SUBMITHUB_API_KEY }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          SENDER_LOGIN: ${{ github.event.sender.login }}
         run: |
           deno run --allow-read --allow-write --allow-env --allow-net .github/scripts/review.js
 
