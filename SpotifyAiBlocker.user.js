@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Spotify AI Artist Blocker
-// @version      0.1.13
+// @version      0.1.14
 // @description  Automatically block AI-generated artists on Spotify using a crowd-sourced list
 // @author       CennoxX
 // @namespace    https://greasyfork.org/users/21515
@@ -167,20 +167,44 @@
         };
     }
 
-    function getArtistInfo() {
+    function getPlayingArtistInfo() {
+        const trackId = document.querySelector('[data-context-item-type="track"]')?.href.split("track%3A").pop();
         const el = document.querySelector('.Root [data-testid="now-playing-bar"] [data-testid="context-item-info-artist"]');
-        const track = "https://open.spotify.com/track/" + document.querySelector('[data-context-item-type="track"]').href.split("track%3A").pop();
-        return { name: el?.innerText, url: el?.href, id: el?.href?.match(/\/artist\/([^\s]+)/i)?.[1], track: track };
+        if (!trackId || !el)
+            return toastMessage("Couldn't find currently playing artist");
+        return { name: el?.innerText, url: el?.href, id: el?.href?.match(/\/artist\/([^\s]+)/i)?.[1], track: "https://open.spotify.com/track/" + trackId };
     }
 
-    GM_registerMenuCommand("Report AI Artist in GitHub", async() => {
-        const { name, url, id, track } = getArtistInfo();
+    function getOpenedArtistInfo() {
+        const trackId = document.querySelector('[data-testid="track-list"] a[data-testid="internal-track-link"]')?.href.split("track/").pop();
+        const el = document.querySelector('main:has([data-testid="artist-page"])');
+        const artistId = el?.querySelector("section")?.dataset.testUri?.split("artist:").pop();
+        const artistName = el?.querySelector('[data-encore-id="adaptiveTitle"]').innerHTML;
+        if (!trackId || !el || !artistId || !artistName)
+            return toastMessage("Couldn't find currently opened artist");
+        return { name: artistName, url: "https://open.spotify.com/artist/" + artistId, id: artistId, track: "https://open.spotify.com/track/" + trackId };
+    }
+
+    GM_registerMenuCommand("Report opened AI Artist", async() => {
+        const { name, url, id, track } = getOpenedArtistInfo();
         await blockArtists([id]);
-        window.open(`https://github.com/CennoxX/spotify-ai-blocker/issues/new?template=ai-artist.yml&title=[AI-Artist]%20${name}&artist_url=${url}&example_track_url=${track}&artist_name=${name}`);
+        window.open(`https://spotify-ai-blocker.cennoxx.deno.net/?artist_url=${url}&example_track_url=${track}&artist_name=${name}`);
     });
 
-    GM_registerMenuCommand("Copy AI Artist name and ID", async() => {
-        const { name, id } = getArtistInfo();
+    GM_registerMenuCommand("Report playing AI Artist", async() => {
+        const { name, url, id, track } = getPlayingArtistInfo();
+        await blockArtists([id]);
+        window.open(`https://spotify-ai-blocker.cennoxx.deno.net/?artist_url=${url}&example_track_url=${track}&artist_name=${name}`);
+    });
+
+    GM_registerMenuCommand("Copy opened AI Artists name and ID", async() => {
+        const { name, id } = getOpenedArtistInfo();
+        await blockArtists([id]);
+        GM_setClipboard(`${name},${id}`, "text");
+    });
+
+    GM_registerMenuCommand("Copy playing AI Artists name and ID", async() => {
+        const { name, id } = getPlayingArtistInfo();
         await blockArtists([id]);
         GM_setClipboard(`${name},${id}`, "text");
     });
