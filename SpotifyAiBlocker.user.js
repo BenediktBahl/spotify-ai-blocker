@@ -49,7 +49,7 @@
     function getUsername() {
         const username = Object.keys(localStorage).find(k => k.includes(":") && !k.startsWith("anonymous:"))?.split(":")[0];
         if (!username)
-            alert("Username not found.");
+            toastMessage("Username not found.");
         return username;
     }
 
@@ -135,6 +135,7 @@
             let done = 0;
             for (let i = 0; i < toBlock.length; i += 50) {
                 const batch = toBlock.slice(i, i + 50);
+                console.log(batch.map(a => `${a.name} (${a.id})`).join("\n"));
                 const ids = batch.map(a => a.id);
                 if (await blockArtists(ids)) {
                     ids.forEach(id => addBlocked(id));
@@ -143,7 +144,6 @@
                 } else {
                     console.log("Failed to block batch.");
                 }
-                console.log(batch.map(a => `${a.name} (${a.id})`).join("\n"));
                 await randomDelay();
             }
             setLastRun(today);
