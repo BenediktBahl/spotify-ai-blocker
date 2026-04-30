@@ -49,7 +49,14 @@ async function detectTrack(trackId) {
     headers: { "X-API-Key": shlabsApiKey, "Content-Type": "application/json" },
     body: JSON.stringify({ spotifyTrackId: trackId }),
   });
-  const json = await response.json();
+  const rawText = await response.text();
+  console.log(rawText);
+  let json;
+  try {
+    json = JSON.parse(rawText);
+  } catch (e) {
+    throw new Error("Invalid JSON response");
+  }
   if (json.error) throw new Error(`${json.error} ${json.details || ""}`);
   return Math.round(json?.result?.probability_ai_generated || 0);
 }
