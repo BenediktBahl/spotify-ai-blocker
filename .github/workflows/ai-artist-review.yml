@@ -8,6 +8,10 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: review-ai-artist
+  cancel-in-progress: false
+
 jobs:
   review:
     if: ${{ github.event.action == 'opened' || github.event.label.name == 'accepted' }}
@@ -18,10 +22,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Configure union merge for CSV
-        run: |
-          git config --global merge.union.driver true
 
       - name: Setup Deno
         uses: denoland/setup-deno@v2
@@ -49,5 +49,24 @@ jobs:
           git add SpotifyAiArtists.csv
           git commit -m "Add AI artist: \"${{ steps.review.outputs.artist_name }}\" (ID: ${{ steps.review.outputs.artist_id }}) fixes #${{ github.event.issue.number }}" || exit 0
 
-          git pull --ff-only origin main || git merge origin/main
-          git push origin HEAD:main
+          # Reconcile with any commits that landed on main since checkout,
+          # relying on the built-in `merge=union` driver declared in
+          # .gitattributes for SpotifyAiArtists.csv (no custom driver needed).
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git merge --no-edit origin/main && break
+            echo "Merge attempt $i failed, retrying..."
+            sleep $((RANDOM % 5 + 1))
+          done
+
+          # Push with retry in case another run landed a commit in the meantime.
+          for i in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              break
+            fi
+            echo "Push attempt $i failed, fetching and retrying..."
+            git fetch origin main
+            git merge --no-edit origin/main
+            sleep $((RANDOM % 5 + 1))
+          done
